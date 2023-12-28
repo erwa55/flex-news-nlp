@@ -11,4 +11,4 @@ COPY . /app
 RUN pip install --no-cache-dir transformers torch
 
 # Run classify.py when the container launches
-CMD ["python", "./classify.py"]
+CMD ["python", "./app/classify.py"]
