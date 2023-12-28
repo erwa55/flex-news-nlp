@@ -1,0 +1,8 @@
+curl -X 'POST' \
+  'http://0.0.0.0:8000/classify' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "sequence_to_classify": "I love playing the piano and performing on stage.",
+  "candidate_labels": ["music", "sports", "cooking"]
+}'
