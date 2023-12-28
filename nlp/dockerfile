@@ -13,5 +13,5 @@ RUN pip install --no-cache-dir transformers torch fastapi uvicorn
 # Expose the port the app runs on
 EXPOSE 8000
 
-# Run uvicorn to start the FastAPI app
-CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run uvicorn to start the NLP zeroshot  app
+CMD ["uvicorn", "classify:app", "--host", "0.0.0.0", "--port", "8000"]
