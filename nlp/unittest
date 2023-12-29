@@ -9,7 +9,7 @@ docker run -p 8000:8000 zero-shot-classifier
 
 3
 
-ngrok config add-authtoken 2aENpOOkzirxkuGLAvAC2nAV0nT_7mr6Bfui8VaWeq7Uc7Twp
+
 
 curl -X 'POST' \
   'http://172.16.34.24:8000/classify' \
