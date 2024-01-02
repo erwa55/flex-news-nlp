@@ -11,7 +11,7 @@ docker run -p 8000:8000 zero-shot-classifier
 
 
 curl -X 'POST' \
-  'http://172.16.34.24:8000/classify' \
+  'http://172.0.0.1:8000/classify' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
