@@ -1,26 +1,26 @@
 package news
 
-import com.ooyala.flex.enterprise.client.service.AssetApiService
-import com.ooyala.flex.enterprise.client.service.TaxonomyApiService
+
 import com.ooyala.flex.plugins.GroovyScriptContext
-import com.ooyala.flex.query.asset.AssetApiQuery
 import com.ooyala.flex.sdk.FlexSdkClient
 import com.ooyala.flex.model.userdefinedobject.create.NewUserDefinedObject
-import com.ooyala.flex.taxonomy.model.Taxon
-import com.ooyala.flex.taxonomy.model.Taxonomy
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import groovy.xml.XmlSlurper
 
 import java.text.SimpleDateFormat
+import java.util.regex.Matcher
 
 class rssImport {
 
     GroovyScriptContext context;
     FlexSdkClient flexSdkClient;
 
-    private final TaxonomyApiService taxonomyApiService
+    //class variables for AI services
+    List<String> taxonNames = []
 
+
+    // START
     def execute() {
 
         // Set RSS feed to read
@@ -32,13 +32,37 @@ class rssImport {
         def currentTime = new Date()
 
 
-        // Parsing
+
+        // Get taxons of the first level and populate class variables for AI service
+        def taxonData = flexSdkClient.taxonomyService.getRootTaxons(812205222) as String
+        taxonData.tokenize('),').each {
+            String taxon = it.trim()
+            // Match the name field in the string
+            Matcher m = taxon =~ /name=([^,]+)/
+            if (m.find()) {
+                String name = m.group(1)
+                taxonNames.add(name)
+            }
+        }
+        context.logInfo("All taxon names: $taxonNames")
+
+
+        // Parsing RSS
         def parser = new XmlSlurper()
         def rss = parser.parse(rssFeedUrl)
 
         rss.channel.item.each { item ->
 
+            /*
+            In this parsing, I implement a complete logic to import only those articles that have been published in the last 30 minutes.
+            This method allows me to safely import new articles every 30 minutes and ensure that they are not imported twice.
+            This method is of course not perfect, but it's quick to implement and doesn't require any database calls, so it's much more efficient.
 
+             ATTENTION: If this were to be implemented in production, I do not recommend using it ! Instead suggest exploring methods based
+             on the comparison of publication dates plus tokens generated in the day (e.g. if the date corresponds to today and the checksum
+             of the url does not exist in this week's list. Then matter )
+
+             */
             // transform date of the article
             def pubDate = item.pubDate.text()
             def date = dateFormat.parse(pubDate)
@@ -46,9 +70,7 @@ class rssImport {
             def thirtyMinutesAgo = new Date(currentTime.time - 30 * 60 * 1000)
             context.logInfo("$date  vs $thirtyMinutesAgo ")
 
-
             if (date.before(thirtyMinutesAgo)) {
-
                 context.logInfo("Title: ${item.title.text()}\n" +
                         "Description: ${item.description.text()}\n" +
                         "Categorie: ${item.category.text()}\n" +
@@ -56,6 +78,7 @@ class rssImport {
                         "Link: ${item.guid.text()}")
                 context.logInfo("-----------------------------")
 
+                // Create the UDO
                 udoBuilder(item.title.text() as String, item.description.text() as String, item.guid.text() as String, item.category.text() as String)
             }
         }
@@ -72,6 +95,7 @@ class rssImport {
                 "─████───█\n" +
                 "─▀▀▀▀▀▀▀\n")
 
+    // END
     }
 
 
@@ -94,12 +118,13 @@ class rssImport {
 
         //Set the metadata to UDO
         field.getField('description').setValue(description);
-        context.logWarn(" Cat is : $category")
-        field.getField('theme').setValue(classify(description))
-
         field.getField('url').setValue(link);
 
+        //Call NLP service to get theme base on AI analysis
+        field.getField('theme').setValue(classify(description))
 
+
+        //  Save metadata
         udoService.setObjectData('wires', createdUDO.id, field)
 
 
@@ -112,17 +137,19 @@ class rssImport {
 
     def classify(String description) {
 
-        def apiUrl = 'https://b2b2-51-210-82-58.ngrok-free.app/classify'
-        //TODO get candidates label by listing taxonomies
+        // Set service URL -  Change by your own service address
+        def apiUrl = 'https://app.app/classify'
 
+        //Build  request body
         def requestContent = [
                 sequence_to_classify: "$description",
-                candidate_labels    : ["Art", "Economy", "Health", "Politic", "Science", "Society", "Sports", "Traffic", "Weather", "World"]
+                candidate_labels    : taxonNames
         ]
 
+        //Call AI service
         def url = new URL(apiUrl)
-        def connection = url.openConnection() as HttpURLConnection
 
+        def connection = url.openConnection() as HttpURLConnection
         connection.requestMethod = 'POST'
         connection.doOutput = true
         connection.setRequestProperty('Content-Type', 'application/json')
@@ -130,6 +157,7 @@ class rssImport {
             writer.write(new JsonBuilder(requestContent).toString())
         }
 
+        //Parse AI reponse
         def response = connection.inputStream.withReader('UTF-8') { reader ->
             new JsonSlurper().parse(reader)
         }
@@ -140,6 +168,6 @@ class rssImport {
 
         return response.label as String
     }
-    
+
 
 }

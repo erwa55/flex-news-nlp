@@ -1,14 +1,13 @@
-1
+1 Build
 
 docker build -t zero-shot-classifier .
 
 
-2
+2 Run
 
 docker run -p 8000:8000 zero-shot-classifier
 
-3
-
+3 Test
 
 
 curl -X 'POST' \

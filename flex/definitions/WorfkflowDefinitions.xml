@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mio-objects>
+    <mio-object>
+        <id>510118</id>
+        <name>news.RSSImport</name>
+        <type>workflow-definition</type>
+        <description><![CDATA[]]></description>
+        <created>2023-12-15 00:36:53.0</created>
+        <enabled>true</enabled>
+        <approved>false</approved>
+        <deleted>false</deleted>
+        <owner>news-service</owner>
+        <account>news</account>
+        <visibility>news</visibility>
+        <mio-entity classname="tv.nativ.mio.enterprise.workflow.definition.MioWorkflowDefinition">
+            <id>510118</id>
+            <concurrentWorkflowLimit>0</concurrentWorkflowLimit>
+            <process-definition name="news.RSSImport">
+                <description/>
+                <event type="node-enter">
+                    <action name="Node Enter" class="tv.nativ.mio.enterprise.workflow.node.MioNodeEnterEventHandler" config-type="bean"/>
+                </event>
+                <event type="node-leave">
+                    <action name="Node Leave" class="tv.nativ.mio.enterprise.workflow.node.MioNodeLeaveEventHandler" config-type="bean"/>
+                </event>
+                <event type="task-cancel">
+                    <action name="Task Cancel" class="tv.nativ.mio.enterprise.workflow.task.TaskCancelActionHandler" config-type="bean"/>
+                </event>
+                <start-state name="Start 1">
+                    <transition to="/Fork "/>
+                </start-state>
+                <end-state name="End 1"/>
+                <node name="New York Times feed">
+                    <action class="tv.nativ.mio.enterprise.workflow.MioJbpmActionHandler" config-type="bean">
+                        <configId>510119</configId>
+                    </action>
+                    <transition to="/Join "/>
+                </node>
+                <node name="BBC Worldwilde feed">
+                    <action class="tv.nativ.mio.enterprise.workflow.MioJbpmActionHandler" config-type="bean">
+                        <configId>532345</configId>
+                    </action>
+                    <transition to="/Join "/>
+                </node>
+                <fork name="Fork ">
+                    <transition to="/New York Times feed"/>
+                    <transition to="/BBC Worldwilde feed"/>
+                    <transition to="/Wait 30 mins"/>
+                </fork>
+                <join name="Join ">
+                    <transition to="/End 1"/>
+                </join>
+                <node name="Wait 30 mins">
+                    <action class="tv.nativ.mio.enterprise.workflow.MioJbpmActionHandler" config-type="bean">
+                        <configId>532349</configId>
+                    </action>
+                    <transition to="/Launch new ingest "/>
+                </node>
+                <node name="Launch new ingest ">
+                    <action class="tv.nativ.mio.enterprise.workflow.MioJbpmActionHandler" config-type="bean">
+                        <configId>532351</configId>
+                    </action>
+                    <transition to="/Join "/>
+                </node>
+                <event type="process-end">
+                    <action name="handler" class="tv.nativ.mio.enterprise.workflow.eventhandler.MioWorkflowProcessEndEventHandler" config-type="bean"/>
+                </event>
+                <event type="process-failed">
+                    <action name="Failed Handler" class="tv.nativ.mio.enterprise.workflow.eventhandler.MioWorkflowProcessFailEventHandler" config-type="bean"/>
+                </event>
+                <event type="process-cancel">
+                    <action name="Cancel Handler" class="tv.nativ.mio.enterprise.workflow.eventhandler.MioWorkflowProcessCancelEventHandler" config-type="bean"/>
+                </event>
+                <event type="process-retry">
+                    <action name="Retry Handler" class="tv.nativ.mio.enterprise.workflow.eventhandler.WorkflowRetryEventHandler" config-type="bean"/>
+                </event>
+            </process-definition>
+            <gpd>
+                <root-container name="news.RSSImport" width="1117" height="600">
+                    <node name="Start 1" x="175" y="155" width="150" height="38">
+                        <edge>
+                            <label/>
+                        </edge>
+                    </node>
+                    <node name="End 1" x="177" y="562" width="150" height="38"/>
+                    <node name="New York Times feed" x="168" y="334" width="164" height="38">
+                        <edge>
+                            <label/>
+                        </edge>
+                    </node>
+                    <node name="BBC Worldwilde feed" x="526" y="334" width="165" height="38">
+                        <edge>
+                            <label/>
+                        </edge>
+                    </node>
+                    <node name="Fork " x="175" y="216" width="150" height="38">
+                        <edge>
+                            <label/>
+                        </edge>
+                        <edge>
+                            <label/>
+                        </edge>
+                        <edge>
+                            <label/>
+                        </edge>
+                    </node>
+                    <node name="Join " x="177" y="473" width="150" height="38">
+                        <edge>
+                            <label/>
+                        </edge>
+                    </node>
+                    <node name="Wait 30 mins" x="965" y="224" width="150" height="38">
+                        <edge>
+                            <label/>
+                        </edge>
+                    </node>
+                    <node name="Launch new ingest " x="965" y="334" width="152" height="38">
+                        <edge>
+                            <label/>
+                        </edge>
+                    </node>
+                </root-container>
+            </gpd>
+            <processimage><![CDATA[/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMDAwYEBAMFBwYHBwcG
+BwcICQsJCAgKCAcHCg0KCgsMDAwMBwkODw0MDgsMDAz/2wBDAQICAgMDAwYDAwYMCAcIDAwMDAwM
+DAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCAEsASwDASIA
+AhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQA
+AAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3
+ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWm
+p6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEA
+AwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSEx
+BhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElK
+U1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3
+uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9/KKK
+KACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAoooo
+AKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigA
+ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACi
+iigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKK
+KACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAoooo
+AKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigA
+ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACi
+iigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKK
+KACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAoooo
+AKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigA
+ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACi
+iigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKK
+KACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAoooo
+AKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigA
+ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACi
+iigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKK
+KACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAoooo
+AKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigA
+ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACi
+iigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKK
+KACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAoooo
+AKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigA
+ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACi
+iigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKK
+KACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAoooo
+AKKKKACiiigAooooAKKKKAP/]]></processimage>
+        </mio-entity>
+    </mio-object>
+</mio-objects>

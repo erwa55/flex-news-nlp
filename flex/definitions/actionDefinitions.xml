@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mio-objects>
+    <mio-object>
+        <id>510119</id>
+        <name>news.rss.NYT</name>
+        <type>action</type>
+        <description><![CDATA[]]></description>
+        <created>2023-12-15 00:39:13.0</created>
+        <enabled>true</enabled>
+        <approved>false</approved>
+        <deleted>false</deleted>
+        <owner>news-service</owner>
+        <account>news</account>
+        <visibility>news</visibility>
+        <metadata-definition>
+            <metadata id="641937" name="script-action-configuration" display_name="Script Action Configuration" commentable="false">
+                <searchable>false</searchable>
+                <editable>true</editable>
+                <required>false</required>
+                <children>
+                    <complex id="641938" name="internal-script" display_name="Internal Script" commentable="false" multiplicity="0..1">
+                        <description><![CDATA[Internal script configuration.]]></description>
+                        <searchable>false</searchable>
+                        <editable>true</editable>
+                        <required>false</required>
+                        <form-type></form-type>
+                        <children>
+                            <script id="641939" name="script-content" display_name="Groovy Script" commentable="false">
+                                <description><![CDATA[Groovy script content.]]></description>
+                                <searchable>false</searchable>
+                                <editable>true</editable>
+                                <required>false</required>
+                                <form-type>textarea</form-type>
+                            </script>
+                            <file id="641940" name="script-file" display_name="Script File" commentable="false">
+                                <description><![CDATA[Groovy script File.]]></description>
+                                <searchable>false</searchable>
+                                <editable>true</editable>
+                                <required>false</required>
+                                <form-type>file</form-type>
+                                <validation handler="tv.nativ.mio.metadata.resource.def.MioFileVariable.FileValidationHandler"/>
+                                <children>
+                                    <string id="641941" name="file-name" display_name="File Name" commentable="false">
+                                        <description><![CDATA[Name of the File]]></description>
+                                        <searchable>false</searchable>
+                                        <editable>true</editable>
+                                        <required>false</required>
+                                        <form-type>text</form-type>
+                                    </string>
+                                    <string id="641942" name="file-path" display_name="File Path" commentable="false">
+                                        <description><![CDATA[Path of the given file]]></description>
+                                        <searchable>false</searchable>
+                                        <editable>true</editable>
+                                        <required>false</required>
+                                        <form-type>text</form-type>
+                                    </string>
+                                    <string id="641943" name="persisted-file-name" display_name="persisted-file-name" commentable="false">
+                                        <searchable>false</searchable>
+                                        <editable>false</editable>
+                                        <required>false</required>
+                                        <form-type>text</form-type>
+                                    </string>
+                                </children>
+                            </file>
+                            <string id="641944" name="script-import" display_name="Imports" commentable="false" multiplicity="0..*">
+                                <description><![CDATA[Script import to use.]]></description>
+                                <searchable>false</searchable>
+                                <editable>true</editable>
+                                <required>false</required>
+                                <form-type>text</form-type>
+                            </string>
+                            <string id="641945" name="internal-jar-url" display_name="JAR File URL" commentable="false" multiplicity="0..*">
+                                <description><![CDATA[URL of a JAR file to be added to the class loader. JAR filename must include a numeric identifier (e.g. example-1.4.0.jar).]]></description>
+                                <searchable>false</searchable>
+                                <editable>true</editable>
+                                <required>false</required>
+                                <form-type>text</form-type>
+                                <validation><![CDATA[flexScriptValidator.validateJarUrl(value)]]></validation>
+                                <validation-description><![CDATA[Invalid JAR filename]]></validation-description>
+                            </string>
+                        </children>
+                        <column-layout-supported>false</column-layout-supported>
+                    </complex>
+                    <complex id="641946" name="external-script" display_name="External Script" commentable="false" multiplicity="0..1">
+                        <description><![CDATA[External script configuration.]]></description>
+                        <searchable>false</searchable>
+                        <editable>true</editable>
+                        <required>false</required>
+                        <form-type></form-type>
+                        <children>
+                            <string id="641947" name="external-jar-url" display_name="JAR File URL" commentable="false" multiplicity="1..*">
+                                <description><![CDATA[URL of a JAR file of custom code containing the specified Class Name, or to be imported into the class loader. JAR filename must include a numeric identifier (e.g. example-1.4.0.jar).]]></description>
+                                <searchable>false</searchable>
+                                <editable>true</editable>
+                                <required>false</required>
+                                <form-type>text</form-type>
+                                <validation><![CDATA[flexScriptValidator.validateJarUrl(value)]]></validation>
+                                <validation-description><![CDATA[Invalid JAR filename]]></validation-description>
+                            </string>
+                            <string id="641948" name="script-class-name" display_name="Class Name" commentable="false">
+                                <description><![CDATA[Script class name.]]></description>
+                                <searchable>false</searchable>
+                                <editable>true</editable>
+                                <required>true</required>
+                                <form-type>text</form-type>
+                            </string>
+                        </children>
+                        <column-layout-supported>false</column-layout-supported>
+                    </complex>
+                    <single-option id="641949" name="execution-lock-type" display_name="Requires Lock" commentable="false" type="string">
+                        <description><![CDATA[Type of lock required.]]></description>
+                        <searchable>false</searchable>
+                        <editable>true</editable>
+                        <required>true</required>
+                        <form-type>radio</form-type>
+                        <children>
+                            <option-child id="641950" name="shared" display_name="Shared" commentable="false" default="false" value="SHARED"/>
+                            <option-child id="641951" name="exclusive" display_name="Exclusive" commentable="false" default="false" value="EXCLUSIVE"/>
+                            <option-child id="641952" name="none" display_name="None" commentable="false" default="false" value="NONE"/>
+                        </children>
+                    </single-option>
+                </children>
+                <metadatadefinitionversion>1</metadatadefinitionversion>
+            </metadata>
+        </metadata-definition>
+        <metadata>
+            <metadata-instance id="313350" name="script-action-configuration" exists="true">
+                <value>
+                    <complex-instance id="313351" name="internal-script" exists="true">
+                        <value>
+                            <script-instance id="313352" name="script-content" exists="true">
+                                <value><![CDATA[//class variables for AI services
+    List<String> taxonNames = []
+
+
+    // START
+    def execute() {
+
+        // Set RSS feed to read
+        def rssFeedUrl = 'https://rss.nytimes.com/services/xml/rss/nyt/World.xml' // Replace with your RSS feed URL
+
+        // Set the locale to English and the timezone to UTC for date parsing
+        def dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH)
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"))
+        def currentTime = new Date()
+
+
+
+        // Get taxons of the first level and populate class variables for AI service
+        def taxonData = flexSdkClient.taxonomyService.getRootTaxons(812205222) as String
+        taxonData.tokenize('),').each {
+            String taxon = it.trim()
+            // Match the name field in the string
+            Matcher m = taxon =~ /name=([^,]+)/
+            if (m.find()) {
+                String name = m.group(1)
+                taxonNames.add(name)
+            }
+        }
+        context.logInfo("All taxon names: $taxonNames")
+
+
+        // Parsing RSS
+        def parser = new XmlSlurper()
+        def rss = parser.parse(rssFeedUrl)
+
+        rss.channel.item.each { item ->
+
+            /*
+            In this parsing, I implement a complete logic to import only those articles that have been published in the last 30 minutes.
+            This method allows me to safely import new articles every 30 minutes and ensure that they are not imported twice.
+            This method is of course not perfect, but it's quick to implement and doesn't require any database calls, so it's much more efficient.
+
+             ATTENTION: If this were to be implemented in production, I do not recommend using it ! Instead suggest exploring methods based
+             on the comparison of publication dates plus tokens generated in the day (e.g. if the date corresponds to today and the checksum
+             of the url does not exist in this week's list. Then matter )
+
+             */
+            // transform date of the article
+            def pubDate = item.pubDate.text()
+            def date = dateFormat.parse(pubDate)
+            // Set the time it was 30 before actual time
+            def thirtyMinutesAgo = new Date(currentTime.time - 30 * 60 * 1000)
+            context.logInfo("$date  vs $thirtyMinutesAgo ")
+
+            if (date.before(thirtyMinutesAgo)) {
+                context.logInfo("Title: ${item.title.text()}\n" +
+                        "Description: ${item.description.text()}\n" +
+                        "Categorie: ${item.category.text()}\n" +
+                        "Publication Date: ${item.pubDate.text()}\n" +
+                        "Link: ${item.guid.text()}")
+                context.logInfo("-----------------------------")
+
+                // Create the UDO
+                udoBuilder(item.title.text() as String, item.description.text() as String, item.guid.text() as String, item.category.text() as String)
+            }
+        }
+
+        context.logWarn("All good Sir =')")
+
+
+        context.logInfo(" \n" +
+                "▄───▄\n" +
+                "█▀█▀█\n" +
+                "█▄█▄█\n" +
+                "─███──▄▄\n" +
+                "─████▐█─█\n" +
+                "─████───█\n" +
+                "─▀▀▀▀▀▀▀\n")
+
+    // END
+    }
+
+
+    def udoBuilder(String name, String description, String link, String category) {
+
+        // prepare udo build
+        def wire = NewUserDefinedObject.builder()
+                .name(name)
+                .workspaceId(509529)
+                .build()
+
+        //build UDO
+        def udoService = flexSdkClient.userDefinedObjectService;
+        def createdUDO = udoService.createUserDefinedObject('wires', wire);
+
+
+        //Retrieve UDO and modify metadata
+        def field = udoService.getObjectData('wires', createdUDO.id);
+
+
+        //Set the metadata to UDO
+        field.getField('description').setValue(description);
+        field.getField('url').setValue(link);
+
+        //Call NLP service to get theme base on AI analysis
+        field.getField('theme').setValue(classify(description))
+
+
+        //  Save metadata
+        udoService.setObjectData('wires', createdUDO.id, field)
+
+
+        context.logInfo("New wire created =D")
+        return createdUDO.id
+
+
+    }
+
+
+    def classify(String description) {
+
+        // Set service URL
+        def apiUrl = 'https://b2b2-51-210-82-58.ngrok-free.app/classify'
+
+        //Build  request body
+        def requestContent = [
+                sequence_to_classify: "$description",
+                candidate_labels    : taxonNames
+        ]
+
+        //Call AI service
+        def url = new URL(apiUrl)
+
+        def connection = url.openConnection() as HttpURLConnection
+        connection.requestMethod = 'POST'
+        connection.doOutput = true
+        connection.setRequestProperty('Content-Type', 'application/json')
+        connection.outputStream.withWriter('UTF-8') { writer ->
+            writer.write(new JsonBuilder(requestContent).toString())
+        }
+
+        //Parse AI reponse
+        def response = connection.inputStream.withReader('UTF-8') { reader ->
+            new JsonSlurper().parse(reader)
+        }
+
+        context.logInfo("Status: ${connection.responseCode}" + " Highest Score Label: ${response.label}")
+
+        connection.disconnect()
+
+        return response.label as String
+    }]]></value>
+                            </script-instance>
+                            <file-instance id="313353" name="script-file" exists="true">
+                                <value>
+                                    <string-instance id="313354" name="file-name" exists="true">
+                                        <value></value>
+                                    </string-instance>
+                                    <string-instance id="313355" name="file-path" exists="true">
+                                        <value></value>
+                                    </string-instance>
+                                    <string-instance id="313356" name="persisted-file-name" exists="true">
+                                        <value></value>
+                                    </string-instance>
+                                </value>
+                            </file-instance>
+                            <string-instance id="313357" name="script-import" exists="true">
+                                <value>groovy.xml.XmlSlurper</value>
+                            </string-instance>
+                            <string-instance id="313358" name="script-import" exists="true">
+                                <value>java.util.Date</value>
+                            </string-instance>
+                            <string-instance id="313359" name="script-import" exists="true">
+                                <value>java.text.SimpleDateFormat</value>
+                            </string-instance>
+                            <string-instance id="313360" name="script-import" exists="true">
+                                <value>java.util.regex.Matcher</value>
+                            </string-instance>
+                            <string-instance id="313361" name="script-import" exists="true">
+                                <value></value>
+                            </string-instance>
+                        </value>
+                    </complex-instance>
+                    <single-option-instance id="313362" name="execution-lock-type" exists="true">
+                        <value>
+                            <option-child id="641950" name="shared" display_name="Shared" commentable="false" default="false" value="SHARED"/>
+                        </value>
+                    </single-option-instance>
+                </value>
+            </metadata-instance>
+        </metadata>
+        <mio-entity supportsAutoRetry="false" classname="tv.nativ.mio.enterprise.execution.action.config.MioActionConfig">
+            <id>510119</id>
+            <type>script</type>
+            <timeout>0</timeout>
+            <concurrentJobsLimit>0</concurrentJobsLimit>
+            <class-name>tv.nativ.mio.plugins.actions.jef.JEFActionProxyCommand</class-name>
+            <supports-synchronous-execution>false</supports-synchronous-execution>
+            <plugin-uuid>cab6f437-3ce0-4857-9578-fd519b783d66</plugin-uuid>
+            <jef-plugin>true</jef-plugin>
+            <plugin-version>1.1.2d897dc</plugin-version>
+            <use-latest-available-version>true</use-latest-available-version>
+        </mio-entity>
+    </mio-object>
+</mio-objects>
