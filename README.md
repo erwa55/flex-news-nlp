@@ -60,4 +60,4 @@ curl -X 'POST' \
 ```
 
 
-Finally import the workflow definition and the script inside the FLex folder.
+Finally import the workflow definition and the script inside the Flex folder.
